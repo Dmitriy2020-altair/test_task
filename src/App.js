@@ -1,12 +1,16 @@
+import AddNewUserButton from './components/AddNewUserButton';
 import { Container } from './components/styles/Container.styled'
 import GlobalStyels from './components/styles/Global';
+import Table from './components/Table';
 
 function App() {
+
   return (
     <>
       <GlobalStyels />
       <Container>
-        <h1>Basic layout</h1>
+        <AddNewUserButton />
+        <Table/>
       </Container>
     </>
   );
