@@ -1,7 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { getUsersFailure, getUsersSuccess } from '../store/actions/userActions';
-import { DELETE_USER_FAILURE, DELETE_USER_PENDING, DELETE_USER_SUCCESS, GET_USERS_PENDING } from '../store/types';
+import { getUsersFailure, getUsersSuccess, addUserSuccess, addUserFailure } from '../store/actions/userActions';
+import {
+  DELETE_USER_FAILURE,
+  DELETE_USER_PENDING,
+  DELETE_USER_SUCCESS,
+  GET_USERS_PENDING,
+  ADD_USER_PENDING,
+} from '../store/types';
 import { mockApi } from '../config'
 
 export function* getUsers() {
@@ -28,4 +34,17 @@ function* deleteUser(action) {
 
 export function* watchDeleteUser() {
   yield takeLatest(DELETE_USER_PENDING, deleteUser);
+}
+
+function* addUser(action) {
+  try {
+    const response = yield axios.post(`${mockApi}`, action.payload);
+    yield put(addUserSuccess(response.data));
+  } catch (error) {
+    yield put(addUserFailure(error.message));
+  }
+}
+
+export function* watchAddUser() {
+  yield takeLatest(ADD_USER_PENDING, addUser);
 }
