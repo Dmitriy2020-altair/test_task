@@ -19,4 +19,7 @@ export const Button = styled.button`
   &:active {
     opacity: 0.5;
   }
+  &:disabled {
+    cursor: not-allowed;
+  }
 `
