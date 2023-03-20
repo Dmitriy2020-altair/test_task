@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser, getUsers } from '../store/actions/userActions';
 import { Button } from './styles/Button.styled';
@@ -14,14 +14,13 @@ export default function TableRow() {
   const [isEdit, setIsEdit] = useState(false)
   // const [editedValues, setEditedValues] = useState()
   // TODO !!!
-
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
 
-  const onEdit = () => {
+  const onEdit = useCallback(() => {
     setIsEdit(!isEdit)
-  }
+  }, [isEdit])
 
   // TODO !!!
   // const onEditHandler = (userId) => {
@@ -29,21 +28,22 @@ export default function TableRow() {
   // }
 
   const getBgColor = useMemo(() => {
-    return isEdit ? '#63f58c' : '#63d6f5'
+    return isEdit ? '#63d6f5' : '#63f58c'
   }, [isEdit])
 
   const getBtnTitle = useMemo(() => {
-    return isEdit ? 'Edit' : 'Save'
+    return isEdit ? 'Save' : 'Edit'
   }, [isEdit])
 
   return (
     <section>
       {(isLoading || isDeleting) && <Loader />}
-      {users ? (
+      {!users.length && <h3>No users in the list</h3>}
+      {users && (
         users.map(({ id, name, age, about_person }) =>
           <StyledTableRow key={id}>
             <TableDataWrapper>
-              {isEdit ? (
+              {!isEdit ? (
                 <>
                   <div>{id}</div>
                   <div>{name}</div>
@@ -52,10 +52,10 @@ export default function TableRow() {
                 </>
               ) : (
                 <>
-                  <input value={id} disabled />
-                  <input value={name} />
-                  <input value={age} />
-                  <input value={about_person} />
+                  <input defaultValue={id} disabled />
+                  <input defaultValue={name} />
+                  <input defaultValue={age} />
+                  <input defaultValue={about_person} />
                 </>
               )}
             </TableDataWrapper>
@@ -65,10 +65,7 @@ export default function TableRow() {
             </ButtonWrapper>
           </StyledTableRow>
         )
-      ) : (
-        <h3>No users in the list</h3>
-      )
-      }
+      )}
     </section >
   )
 }
