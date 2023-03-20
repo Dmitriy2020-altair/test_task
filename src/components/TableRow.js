@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser, getUsers } from '../store/actions/userActions';
 import { Button } from './styles/Button.styled';
 import { ButtonWrapper } from './styles/ButtonWrapper.styled';
-import { Loader } from './styles/Loader.styled';
 import { LoaderWrapper } from './styles/LoaderWrapper';
 import { StyledTableRow } from './styles/StyledTableRow.styled';
 import { TableDataWrapper } from './styles/TableDataWrapper.styled';
@@ -13,15 +12,15 @@ export default function TableRow() {
   const { isLoading, isDeleting } = useSelector(state => state.userReducer)
   const dispatch = useDispatch()
   const [isEdit, setIsEdit] = useState(false)
-  // const [editedValues, setEditedValues] = useState()
+  // const [editedValues, setEditedValues] = useState(null)
   // TODO !!!
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
 
-  const onEdit = useCallback(() => {
+  const onEdit = () => {
     setIsEdit(!isEdit)
-  }, [isEdit])
+  }
 
   // TODO !!!
   // const onEditHandler = (userId) => {
@@ -38,12 +37,7 @@ export default function TableRow() {
 
   return (
     <section>
-      {(isLoading || isDeleting) && (
-        <LoaderWrapper>
-          <Loader />
-          <div>in process...</div>
-        </LoaderWrapper>
-      )}
+      {(isLoading || isDeleting) && <LoaderWrapper />}
       {!users.length && <h3>No users in the list</h3>}
       {users && (
         users.map(({ id, name, age, about_person }) =>

@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { Loader } from "./Loader.styled";
 
-export const LoaderWrapper = styled.div`
+const LoaderContainer = styled.div`
   position: absolute;
   top: 5%;
   left: 50%;
@@ -13,3 +14,11 @@ export const LoaderWrapper = styled.div`
     margin-top: 10px;
   }
 `
+export const LoaderWrapper = () => {
+  return (
+    <LoaderContainer>
+      <Loader />
+      <div>in process...</div>
+    </LoaderContainer>
+  )
+}

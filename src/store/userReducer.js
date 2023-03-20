@@ -7,7 +7,10 @@ import {
   DELETE_USER_PENDING,
   ADD_USER_SUCCESS,
   ADD_USER_PENDING,
-  ADD_USER_FAILURE
+  ADD_USER_FAILURE,
+  UPDATE_USER_PENDING,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE
 } from "./types";
 
 const initialState = {
@@ -15,6 +18,7 @@ const initialState = {
   isLoading: false,
   isDeleting: false,
   isAdding: false,
+  isUpdating: false,
   error: null,
 };
 export default function userReducer(state = initialState, action) {
@@ -70,6 +74,24 @@ export default function userReducer(state = initialState, action) {
         error: action.payload,
         isAdding: false,
       };
+      case UPDATE_USER_PENDING:
+        return {
+          ...state,
+          isUpdating: true,
+        };
+      case UPDATE_USER_SUCCESS:
+        return {
+          ...state,
+          users: state.users.find((user) => user.id === action.payload),
+          isUpdating: false,
+        };
+      case UPDATE_USER_FAILURE:
+        return {
+          ...state,
+          error: action.payload,
+          isUpdating: false,
+        };
+  
     default:
       return state;
   }

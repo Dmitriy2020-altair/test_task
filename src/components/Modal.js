@@ -14,7 +14,7 @@ const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 10;
 `;
 
@@ -26,6 +26,8 @@ const ModalContent = styled.div`
   border-radius: 5px;
   align-items: center;
   width: 20%;
+  background-color: #edefef;
+
 `;
 
 const InputWrapper = styled.div`
@@ -42,10 +44,11 @@ const InputLabel = styled.label`
 `;
 
 const InputField = styled.input`
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-bottom: 10px;
+  background-color: #d6d8d8;
 `;
 
 const ButtonWrapper = styled.div`
@@ -91,15 +94,15 @@ export const ModalForm = ({ open, setOpen }) => {
         <ClosingCross title="Close Modal" onClick={() => setOpen(false)}>X</ClosingCross>
         <InputWrapper>
           <InputLabel htmlFor="name">Name:</InputLabel>
-          <InputField type="text" name="name" value={formData.name} onChange={handleChange} />
+          <InputField placeholder="Type your name" type="text" name="name" value={formData.name} onChange={handleChange} />
         </InputWrapper>
         <InputWrapper>
           <InputLabel htmlFor="age">Age:</InputLabel>
-          <InputField type="text" name="age" value={formData.age} onChange={handleChange} />
+          <InputField placeholder="Type your age" type="text" name="age" value={formData.age} onChange={handleChange} />
         </InputWrapper>
         <InputWrapper>
           <InputLabel htmlFor="about_person">About:</InputLabel>
-          <InputField type="text" name="about_person" value={formData.about_person} onChange={handleChange} />
+          <InputField placeholder="Type about yourserlf" type="text" name="about_person" value={formData.about_person} onChange={handleChange} />
         </InputWrapper>
         <ButtonWrapper>
           <Button pd={'7px 35px'} onClick={handleSubmit}>Submit</Button>

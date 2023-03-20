@@ -5,7 +5,10 @@ import {
   DELETE_USER_PENDING,
   GET_USERS_FAILURE,
   GET_USERS_PENDING,
-  GET_USERS_SUCCESS
+  GET_USERS_SUCCESS,
+  UPDATE_USER_FAILURE,
+  UPDATE_USER_PENDING,
+  UPDATE_USER_SUCCESS
 } from "../types";
 
 export const getUsers = () => ({
@@ -38,5 +41,19 @@ export const addUserSuccess = (user) => ({
 
 export const addUserFailure = (error) => ({
   type: ADD_USER_FAILURE,
+  payload: error,
+});
+
+export const updateUser = () => ({
+  type: UPDATE_USER_PENDING,
+});
+
+export const updateUserSuccess = (id) => ({
+  type: UPDATE_USER_SUCCESS,
+  payload: id,
+});
+
+export const updateUserFailure = (error) => ({
+  type: UPDATE_USER_FAILURE,
   payload: error,
 });
