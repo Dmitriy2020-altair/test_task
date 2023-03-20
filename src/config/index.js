@@ -1,0 +1,1 @@
+export const mockApi = 'https://641735c89863b4d772a560b8.mockapi.io/api/v1/users'
