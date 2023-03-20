@@ -4,6 +4,7 @@ import { deleteUser, getUsers } from '../store/actions/userActions';
 import { Button } from './styles/Button.styled';
 import { ButtonWrapper } from './styles/ButtonWrapper.styled';
 import { Loader } from './styles/Loader.styled';
+import { LoaderWrapper } from './styles/LoaderWrapper';
 import { StyledTableRow } from './styles/StyledTableRow.styled';
 import { TableDataWrapper } from './styles/TableDataWrapper.styled';
 
@@ -37,7 +38,12 @@ export default function TableRow() {
 
   return (
     <section>
-      {(isLoading || isDeleting) && <Loader />}
+      {(isLoading || isDeleting) && (
+        <LoaderWrapper>
+          <Loader />
+          <div>in process...</div>
+        </LoaderWrapper>
+      )}
       {!users.length && <h3>No users in the list</h3>}
       {users && (
         users.map(({ id, name, age, about_person }) =>
