@@ -5,7 +5,7 @@ export const StyledTableHeader = styled.div`
   justify-content: space-evenly;
   margin: 40px 0;
   font-weight: 700;
-  width: 53vw;
+  width: 54vw;
 
   div {
     text-align: center;
