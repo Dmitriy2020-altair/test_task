@@ -1,6 +1,6 @@
 import { all } from "redux-saga/effects"
-import { watchGetUsers } from "./userSaga"
+import { watchDeleteUser, watchGetUsers } from "./userSaga"
 
 export function* rootWatcher() {
-  yield all([watchGetUsers()])
+  yield all([watchGetUsers(), watchDeleteUser()])
 }

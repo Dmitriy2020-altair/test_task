@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Loader = styled.div`
-  margin: 5% 0 5% 50%;
+  margin: 0 0 3% 50%;
   transform: scale(0.5);
   display: inline-block;
   height: 1em;
