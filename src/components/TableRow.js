@@ -24,22 +24,15 @@ export default function TableRow() {
   });
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
-
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
 
   useEffect(() => {
-    if (isDeleting) {
+    if (isDeleting || isUpdating) {
       setIsEdit(false)
     }
-  }, [isDeleting]);
-
-  useEffect(() => {
-    if (isUpdating) {
-      setIsEdit(false)
-    }
-  }, [isUpdating]);
+  }, [isDeleting, isUpdating]);
 
   useEffect(() => {
     localStorage.setItem('users', JSON.stringify(users));
