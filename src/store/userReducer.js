@@ -65,7 +65,7 @@ export default function userReducer(state = initialState, action) {
     case ADD_USER_SUCCESS:
       return {
         ...state,
-        users: [...state.users, action.payload],
+        users: [...state.users, action.payload.user],
         isAdding: false,
       };
     case ADD_USER_FAILURE:
