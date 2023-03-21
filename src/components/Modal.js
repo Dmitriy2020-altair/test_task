@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
@@ -68,19 +68,31 @@ export const ModalForm = ({ open, setOpen }) => {
     about_person: ''
   };
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState(INITIAL_STATE);
+  const [formData, setFormData] = useState(JSON.parse(localStorage.getItem('formData')) || INITIAL_STATE);
+
+  useEffect(() => {
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    const cachedFormData = JSON.parse(localStorage.getItem('formData'));
+    if (cachedFormData) {
+      setFormData(cachedFormData);
+    }
+  }, []);
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    setFormData({ ...formData, [name]: value });
   };
 
   const closeModal = () => {
     setOpen(false);
-    setFormData(INITIAL_STATE)
   };
 
   const handleSubmit = (event) => {
+    localStorage.removeItem('formData');
+    setFormData(INITIAL_STATE)
     event.preventDefault();
     dispatch(addUser(formData));
     closeModal();
