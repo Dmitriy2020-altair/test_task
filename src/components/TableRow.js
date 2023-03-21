@@ -18,6 +18,10 @@ export default function TableRow() {
   const [isEdit, setIsEdit] = useState(false)
   const [editedUser, setEditedUser] = useState(JSON.parse(localStorage.getItem('editedUser')) || {})
   const [cachedUsers, setCachedUsers] = useState([]);
+  const [sortOrder, setSortOrder] = useState({
+    column: 'id',
+    direction: 'asc',
+  });
 
   useEffect(() => {
     dispatch(getUsers());
@@ -71,6 +75,20 @@ export default function TableRow() {
     }
   }
 
+  const handleSort = (columnName) => {
+    if (sortOrder.column === columnName) {
+      setSortOrder({
+        ...sortOrder,
+        direction: sortOrder.direction === 'asc' ? 'desc' : 'asc',
+      });
+    } else {
+      setSortOrder({
+        column: columnName,
+        direction: 'asc',
+      });
+    }
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setEditedUser({ ...editedUser, [name]: value });
@@ -105,22 +123,36 @@ export default function TableRow() {
         </StyledTableRow>
       )}
       {!isEdit && cachedUsers && (
-        cachedUsers.map(({ id, name, age, about_person }) =>
-          <StyledTableRow key={id}>
-            <TableDataWrapper>
-              <>
-                <div>{id}</div>
-                <div>{name}</div>
-                <div>{age}</div>
-                <div>{about_person}</div>
-              </>
-            </TableDataWrapper>
-            <ButtonWrapper>
-              <Button onClick={() => onEdit(id)} bg={getBgColor} color='#9d9898'>{getBtnTitle}</Button>
-              <Button onClick={() => dispatch(deleteUser(id))} disabled={isDeleting} bg='#f56363' color='#fff'>Delete</Button>
-            </ButtonWrapper>
-          </StyledTableRow>
-        )
+        cachedUsers
+          .sort((a, b) => {
+            const column = sortOrder.column;
+            const direction = sortOrder.direction === 'asc' ? 1 : -1;
+            const valueA = a[column];
+            const valueB = b[column];
+            if (valueA < valueB) {
+              return -1 * direction;
+            }
+            if (valueA > valueB) {
+              return 1 * direction;
+            }
+            return 0;
+          })
+          .map(({ id, name, age, about_person }) =>
+            <StyledTableRow key={id}>
+              <TableDataWrapper>
+                <>
+                  <div onClick={() => handleSort('id')}>{id}</div>
+                  <div onClick={() => handleSort('name')}>{name}</div>
+                  <div onClick={() => handleSort('age')}>{age}</div>
+                  <div onClick={() => handleSort('about_person')}>{about_person}</div>
+                </>
+              </TableDataWrapper>
+              <ButtonWrapper>
+                <Button onClick={() => onEdit(id)} bg={getBgColor} color='#9d9898'>{getBtnTitle}</Button>
+                <Button onClick={() => dispatch(deleteUser(id))} disabled={isDeleting} bg='#f56363' color='#fff'>Delete</Button>
+              </ButtonWrapper>
+            </StyledTableRow>
+          )
       )}
     </section >
   )
