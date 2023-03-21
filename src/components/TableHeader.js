@@ -1,9 +1,14 @@
+import styled from "styled-components";
 import { StyledTableHeader } from "./styles/StyledTableHeader.styled";
+
+const TableDescription = styled.h3`
+  text-align: center;
+`
 
 export default function TableHeader() {
   return (
     <>
-      <h3 style={{textAlign: 'center'}}>click on any value in the table to sort</h3>
+      <TableDescription>click on any value in the table to sort</TableDescription>
       <StyledTableHeader>
         <div>id</div>
         <div>Name</div>
