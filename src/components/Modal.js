@@ -31,7 +31,6 @@ const ModalContent = styled.div`
   @media (max-width: 768px) {
     width: 65%;
   }
-
 `;
 
 const InputWrapper = styled.div`

@@ -6,6 +6,13 @@ export const TableDataWrapper = styled.div`
   width: 53vw;
   text-align: center;
 
+  @media (max-width: 768px) {
+    width: auto;
+    justify-content: space-around;
+
+  }
+
+
   div {
     text-align: center;
     width: 13%;
