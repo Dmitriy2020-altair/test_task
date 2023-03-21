@@ -27,6 +27,11 @@ const ModalContent = styled.div`
   align-items: center;
   width: 20%;
   background-color: #edefef;
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
+
 `;
 
 const InputWrapper = styled.div`
