@@ -7,6 +7,10 @@ export const StyledTableRow = styled.section`
   border-radius: 5px;
   padding: 10px;
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
   div {
     text-align: center;
   }

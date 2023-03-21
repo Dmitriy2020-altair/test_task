@@ -10,6 +10,10 @@ export const TableDataWrapper = styled.div`
     text-align: center;
     width: 13%;
     cursor: pointer;
+
+    @media (max-width: 768px) {
+    width: auto;
+  }
   }
 
 `
