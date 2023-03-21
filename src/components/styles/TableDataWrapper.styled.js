@@ -9,9 +9,11 @@ export const TableDataWrapper = styled.div`
   @media (max-width: 768px) {
     width: auto;
     justify-content: space-around;
-
   }
 
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 
   div {
     text-align: center;

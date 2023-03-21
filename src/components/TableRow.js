@@ -22,6 +22,8 @@ export default function TableRow() {
     column: 'id',
     direction: 'asc',
   });
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
 
   useEffect(() => {
     dispatch(getUsers());
@@ -64,6 +66,16 @@ export default function TableRow() {
     }
   }, [editedUser.id]);
 
+  useEffect(() => {
+    function handleResize() {
+      setViewportWidth(window.innerWidth);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const onEdit = (userId) => {
     if (isEdit) {
       localStorage.removeItem('editedUser');
@@ -102,21 +114,23 @@ export default function TableRow() {
     return isEdit ? 'Save' : 'Edit'
   }, [isEdit])
 
+  const isTabletwidth = useMemo(() => {
+    return viewportWidth < 1150
+  }, [viewportWidth])
+
   return (
     <section>
       {(isLoading || isDeleting || isUpdating) && <LoaderWrapper />}
       {(!users.length && isDeleting) && <h3>No users in the list</h3>}
       {isEdit && (
-        <StyledTableRow>
-          <TableDataWrapper>
-            <>
-              <input onChange={handleInputChange} name="id" value={editedUser.id} disabled />
-              <input onChange={handleInputChange} name="name" value={editedUser.name} />
-              <input onChange={handleInputChange} name="age" value={editedUser.age} />
-              <input onChange={handleInputChange} name="about_person" value={editedUser.about_person} />
-            </>
+        <StyledTableRow tablet={isTabletwidth}>
+          <TableDataWrapper >
+            <input onChange={handleInputChange} name="id" value={editedUser.id} disabled />
+            <input onChange={handleInputChange} name="name" value={editedUser.name} />
+            <input onChange={handleInputChange} name="age" value={editedUser.age} />
+            <input onChange={handleInputChange} name="about_person" value={editedUser.about_person} />
           </TableDataWrapper>
-          <ButtonWrapper>
+          <ButtonWrapper tablet={isTabletwidth}>
             <Button onClick={() => onEdit(editedUser.id)} bg={getBgColor} color='#9d9898'>{getBtnTitle}</Button>
             <Button onClick={() => dispatch(deleteUser(editedUser.id))} disabled={isDeleting} bg='#f56363' color='#fff'>Delete</Button>
           </ButtonWrapper>
