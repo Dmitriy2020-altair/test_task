@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { addUser } from "../store/actions/userActions";
+import { addUserSuccess } from "../store/actions/userActions";
 import { Button } from "./styles/Button.styled";
 
 const ModalWrapper = styled.div`
@@ -66,13 +66,9 @@ const ClosingCross = styled.div`
 `
 
 export const ModalForm = ({ open, setOpen }) => {
-  const INITIAL_STATE = {
-    name: '',
-    age: '',
-    about_person: ''
-  };
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState(JSON.parse(localStorage.getItem('formData')) || INITIAL_STATE);
+  const [formData, setFormData] = useState(JSON.parse(localStorage.getItem('formData')) || {});
+  const users = useSelector(state => state.userReducer.users)
 
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
@@ -85,9 +81,17 @@ export const ModalForm = ({ open, setOpen }) => {
     }
   }, []);
 
+  const generatedId = useMemo(() => {
+    return String(users?.reduce((max, user) => Math.max(max, user.id), 0) + 1);
+  }, [users])
+
   const handleChange = e => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      id: generatedId,
+      [name]: value
+    });
   };
 
   const closeModal = () => {
@@ -96,9 +100,9 @@ export const ModalForm = ({ open, setOpen }) => {
 
   const handleSubmit = (event) => {
     localStorage.removeItem('formData');
-    setFormData(INITIAL_STATE)
+    setFormData({})
     event.preventDefault();
-    dispatch(addUser(formData));
+    dispatch(addUserSuccess(formData));
     closeModal();
   };
 
@@ -108,15 +112,15 @@ export const ModalForm = ({ open, setOpen }) => {
         <ClosingCross title="Close Modal" onClick={() => setOpen(false)}>X</ClosingCross>
         <InputWrapper>
           <InputLabel htmlFor="name">Name:</InputLabel>
-          <InputField placeholder="Type your name" type="text" name="name" value={formData.name} onChange={handleChange} />
+          <InputField placeholder="Type your name" type="text" name="name" value={formData.name || ''} onChange={handleChange} />
         </InputWrapper>
         <InputWrapper>
           <InputLabel htmlFor="age">Age:</InputLabel>
-          <InputField placeholder="Type your age" type="text" name="age" value={formData.age} onChange={handleChange} />
+          <InputField placeholder="Type your age" type="text" name="age" value={formData.age || ''} onChange={handleChange} />
         </InputWrapper>
         <InputWrapper>
           <InputLabel htmlFor="about_person">About:</InputLabel>
-          <InputField placeholder="Type about yourserlf" type="text" name="about_person" value={formData.about_person} onChange={handleChange} />
+          <InputField placeholder="Type about yourserlf" type="text" name="about_person" value={formData.about_person || ''} onChange={handleChange} />
         </InputWrapper>
         <ButtonWrapper>
           <Button pd={'7px 35px'} onClick={handleSubmit}>Submit</Button>
