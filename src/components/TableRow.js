@@ -141,10 +141,10 @@ export default function TableRow() {
             <StyledTableRow key={id}>
               <TableDataWrapper>
                 <>
-                  <div onClick={() => handleSort('id')}>{id}</div>
-                  <div onClick={() => handleSort('name')}>{name}</div>
-                  <div onClick={() => handleSort('age')}>{age}</div>
-                  <div onClick={() => handleSort('about_person')}>{about_person}</div>
+                  <div title='Click to sort the column' onClick={() => handleSort('id')}>{id}</div>
+                  <div title='Click to sort the column' onClick={() => handleSort('name')}>{name}</div>
+                  <div title='Click to sort the column' onClick={() => handleSort('age')}>{age}</div>
+                  <div title='Click to sort the column' onClick={() => handleSort('about_person')}>{about_person}</div>
                 </>
               </TableDataWrapper>
               <ButtonWrapper>

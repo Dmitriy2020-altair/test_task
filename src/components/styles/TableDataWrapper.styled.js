@@ -9,6 +9,7 @@ export const TableDataWrapper = styled.div`
   div {
     text-align: center;
     width: 13%;
+    cursor: pointer;
   }
 
 `
