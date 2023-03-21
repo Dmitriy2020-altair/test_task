@@ -5,7 +5,7 @@ export const ButtonWrapper = styled.div`
  margin-left: auto;
 
  @media (max-width: 768px) {
-    margin: 0;
+    margin: 30px 0 5px 0;
   }
 
   button {
