@@ -7,6 +7,10 @@ export const StyledTableHeader = styled.div`
   font-weight: 700;
   width: 54vw;
 
+  @media (max-width: 768px) {
+    width: auto;
+  }
+  
   div {
     text-align: center;
     width: 13%;
