@@ -3,11 +3,11 @@ import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 
 export default function Table() {
-  
+
   return (
     <StyledTable>
       <TableHeader />
-      <TableRow/>
+      <TableRow />
     </StyledTable>
   )
 }
