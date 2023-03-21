@@ -16,7 +16,8 @@ export default function TableRow() {
   } = useSelector(state => state.userReducer)
   const dispatch = useDispatch()
   const [isEdit, setIsEdit] = useState(false)
-  const [editedUser, setEditedUser] = useState({})
+  const [editedUser, setEditedUser] = useState(JSON.parse(localStorage.getItem('editedUser')) || {})
+  const [cachedUsers, setCachedUsers] = useState([]);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -34,14 +35,40 @@ export default function TableRow() {
     }
   }, [isUpdating]);
 
+  useEffect(() => {
+    localStorage.setItem('users', JSON.stringify(users));
+  }, [users]);
+
+  useEffect(() => {
+    const cachedUsers = JSON.parse(localStorage.getItem('users'));
+    if (cachedUsers) {
+      setCachedUsers(cachedUsers);
+    } else {
+      setCachedUsers(users)
+    }
+  }, [users]);
+
+  useEffect(() => {
+    localStorage.setItem('editedUser', JSON.stringify(editedUser));
+  }, [editedUser]);
+
+  useEffect(() => {
+    const cachedUser = JSON.parse(localStorage.getItem('editedUser'));
+    if (cachedUser && editedUser.id) {
+      setEditedUser(cachedUser);
+      setIsEdit(true)
+    }
+  }, [editedUser.id]);
+
   const onEdit = (userId) => {
     if (isEdit) {
+      localStorage.removeItem('editedUser');
       dispatch(updateUser(editedUser.id, editedUser))
+    } else {
+      const currentUser = users.filter((user) => user.id === userId)
+      setEditedUser(currentUser[0])
+      setIsEdit(!isEdit)
     }
-
-    const currentUser = users.filter((user) => user.id === userId)
-    setEditedUser(currentUser[0])
-    setIsEdit(!isEdit)
   }
 
   const handleInputChange = (event) => {
@@ -60,7 +87,7 @@ export default function TableRow() {
   return (
     <section>
       {(isLoading || isDeleting || isUpdating) && <LoaderWrapper />}
-      {!users.length && <h3>No users in the list</h3>}
+      {(!users.length && isDeleting) && <h3>No users in the list</h3>}
       {isEdit && (
         <StyledTableRow>
           <TableDataWrapper>
@@ -77,8 +104,8 @@ export default function TableRow() {
           </ButtonWrapper>
         </StyledTableRow>
       )}
-      {!isEdit && users && (
-        users.map(({ id, name, age, about_person }) =>
+      {!isEdit && cachedUsers && (
+        cachedUsers.map(({ id, name, age, about_person }) =>
           <StyledTableRow key={id}>
             <TableDataWrapper>
               <>
