@@ -124,7 +124,7 @@ export default function TableRow() {
       {(!users.length && isDeleting) && <h3>No users in the list</h3>}
       {isEdit && (
         <StyledTableRow tablet={isTabletwidth}>
-          <TableDataWrapper >
+          <TableDataWrapper tablet={isTabletwidth}>
             <input onChange={handleInputChange} name="id" value={editedUser.id} disabled />
             <input onChange={handleInputChange} name="name" value={editedUser.name} />
             <input onChange={handleInputChange} name="age" value={editedUser.age} />

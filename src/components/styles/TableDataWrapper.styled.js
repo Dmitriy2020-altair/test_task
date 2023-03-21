@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 export const TableDataWrapper = styled.div`
   display: flex;
@@ -11,9 +11,13 @@ export const TableDataWrapper = styled.div`
     justify-content: space-around;
   }
 
-  @media (max-width: 500px) {
-    flex-direction: column;
-  }
+  ${({ tablet }) =>
+    tablet &&
+    css`
+    @media (max-width: 500px) {
+      flex-direction: column;
+    }
+  `}
 
   div {
     text-align: center;
