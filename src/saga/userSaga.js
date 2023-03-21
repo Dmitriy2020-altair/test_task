@@ -1,13 +1,20 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { getUsersFailure, getUsersSuccess, addUserSuccess, addUserFailure, updateUserSuccess, updateUserFailure } from '../store/actions/userActions';
+import {
+  getUsersFailure,
+  getUsersSuccess,
+  addUserSuccess,
+  addUserFailure,
+  updateUserPending,
+  updateUserFailure
+} from '../store/actions/userActions';
 import {
   DELETE_USER_FAILURE,
   DELETE_USER_PENDING,
   DELETE_USER_SUCCESS,
   GET_USERS_PENDING,
   ADD_USER_PENDING,
-  UPDATE_USER_PENDING,
+  UPDATE_USER,
 } from '../store/types';
 import { mockApi } from '../config'
 
@@ -50,15 +57,17 @@ export function* watchAddUser() {
   yield takeLatest(ADD_USER_PENDING, addUser);
 }
 
-function* updateUser(action) {
+function* updateUserSaga(action) {
   try {
-    yield call(axios.put, `${mockApi}/${action.payload}`);
-    yield put(updateUserSuccess(action.payload));
+    const { id, updatedData } = action.payload;
+    yield put(updateUserPending())
+    yield axios.put(`${mockApi}/${id}`, updatedData);
+    yield put({ type: UPDATE_USER });
   } catch (error) {
-    yield put(updateUserFailure(error.message));
+    yield put(updateUserFailure(error.message))
   }
 }
 
 export function* watchUpdateUser() {
-  yield takeLatest(UPDATE_USER_PENDING, updateUser);
+  yield takeLatest(UPDATE_USER, updateUserSaga);
 }

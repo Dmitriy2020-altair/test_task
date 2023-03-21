@@ -6,9 +6,9 @@ import {
   GET_USERS_FAILURE,
   GET_USERS_PENDING,
   GET_USERS_SUCCESS,
+  UPDATE_USER,
   UPDATE_USER_FAILURE,
   UPDATE_USER_PENDING,
-  UPDATE_USER_SUCCESS
 } from "../types";
 
 export const getUsers = () => ({
@@ -44,13 +44,13 @@ export const addUserFailure = (error) => ({
   payload: error,
 });
 
-export const updateUser = () => ({
+export const updateUserPending = () => ({
   type: UPDATE_USER_PENDING,
 });
 
-export const updateUserSuccess = (id) => ({
-  type: UPDATE_USER_SUCCESS,
-  payload: id,
+export const updateUser = (id, updatedData) => ({
+  type: UPDATE_USER,
+  payload: { id, updatedData },
 });
 
 export const updateUserFailure = (error) => ({

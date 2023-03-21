@@ -9,8 +9,8 @@ import {
   ADD_USER_PENDING,
   ADD_USER_FAILURE,
   UPDATE_USER_PENDING,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAILURE
+  UPDATE_USER_FAILURE,
+  UPDATE_USER
 } from "./types";
 
 const initialState = {
@@ -74,24 +74,21 @@ export default function userReducer(state = initialState, action) {
         error: action.payload,
         isAdding: false,
       };
-      case UPDATE_USER_PENDING:
-        return {
-          ...state,
-          isUpdating: true,
-        };
-      case UPDATE_USER_SUCCESS:
-        return {
-          ...state,
-          users: state.users.find((user) => user.id === action.payload),
-          isUpdating: false,
-        };
-      case UPDATE_USER_FAILURE:
-        return {
-          ...state,
-          error: action.payload,
-          isUpdating: false,
-        };
-  
+    case UPDATE_USER_PENDING:
+      return {
+        ...state,
+        isUpdating: true,
+      };
+    case UPDATE_USER:
+      const { id, updatedData } = action.payload;
+      const updatedUsers = state.users.map((user) => user.id === id ? { ...user, ...updatedData } : user);
+      return { ...state, users: updatedUsers, isUpdating: false };
+    case UPDATE_USER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        isUpdating: false,
+      };
     default:
       return state;
   }

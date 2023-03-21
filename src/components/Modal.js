@@ -27,7 +27,6 @@ const ModalContent = styled.div`
   align-items: center;
   width: 20%;
   background-color: #edefef;
-
 `;
 
 const InputWrapper = styled.div`
@@ -35,7 +34,6 @@ const InputWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 10px;
   width: 80%;
-
 `;
 
 const InputLabel = styled.label`
