@@ -29,7 +29,7 @@ const ModalContent = styled.div`
   background-color: #edefef;
 
   @media (max-width: 768px) {
-    width: auto;
+    width: 65%;
   }
 
 `;
