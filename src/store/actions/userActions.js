@@ -30,18 +30,19 @@ export const deleteUser = (id) => ({
   payload: id,
 });
 
-export const addUser = () => ({
+export const addUserPending = (user) => ({
   type: ADD_USER_PENDING,
+  payload: { user }
 });
 
 export const addUserSuccess = (user) => ({
   type: ADD_USER_SUCCESS,
-  payload: user,
+  payload: { user }
 });
 
 export const addUserFailure = (error) => ({
   type: ADD_USER_FAILURE,
-  payload: error,
+  payload: { error }
 });
 
 export const updateUserPending = () => ({

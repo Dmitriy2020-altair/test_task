@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { addUserSuccess } from "../store/actions/userActions";
+import { addUserPending } from "../store/actions/userActions";
 import { Button } from "./styles/Button.styled";
 
 const ModalWrapper = styled.div`
@@ -102,7 +102,7 @@ export const ModalForm = ({ open, setOpen }) => {
     localStorage.removeItem('formData');
     setFormData({})
     event.preventDefault();
-    dispatch(addUserSuccess(formData));
+    dispatch(addUserPending(formData));
     closeModal();
   };
 

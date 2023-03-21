@@ -44,19 +44,6 @@ export function* watchDeleteUser() {
   yield takeLatest(DELETE_USER_PENDING, deleteUser);
 }
 
-function* addUser(action) {
-  try {
-    const response = yield axios.post(`${mockApi}`, action.payload);
-    yield put(addUserSuccess(response.data));
-  } catch (error) {
-    yield put(addUserFailure(error.message));
-  }
-}
-
-export function* watchAddUser() {
-  yield takeLatest(ADD_USER_PENDING, addUser);
-}
-
 function* updateUserSaga(action) {
   try {
     const { id, updatedData } = action.payload;
@@ -70,4 +57,17 @@ function* updateUserSaga(action) {
 
 export function* watchUpdateUser() {
   yield takeLatest(UPDATE_USER, updateUserSaga);
+}
+
+export function* addUser(action) {
+  try {
+    const response = yield call(axios.post, `${mockApi}`, action.payload.user);
+    yield put(addUserSuccess(response.data));
+  } catch (error) {
+    yield put(addUserFailure(error));
+  }
+}
+
+export function* watchAddUser() {
+  yield takeLatest(ADD_USER_PENDING, addUser);
 }
