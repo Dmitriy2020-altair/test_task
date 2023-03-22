@@ -1,24 +1,25 @@
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { addUserPending } from "../store/actions/userActions";
 import { Button } from "./styles/Button.styled";
 import { ButtonWrapper, ClosingCross, InputField, InputLabel, InputWrapper, ModalContent, ModalWrapper } from "./styles/StyledModalForm.styled";
 
 export const ModalForm = ({ open, setOpen }) => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState(JSON.parse(localStorage.getItem('formData')) || {});
+  const [formData, setFormData] = useState({});
   const users = useSelector(state => state.userReducer.users)
+  const [storedFormData, setStoredFormData] = useLocalStorage('storedFormData', {})
 
   useEffect(() => {
-    localStorage.setItem('formData', JSON.stringify(formData));
-  }, [formData]);
+    setStoredFormData(formData)
+  }, [formData, setStoredFormData, storedFormData]);
 
   useEffect(() => {
-    const cachedFormData = JSON.parse(localStorage.getItem('formData'));
-    if (cachedFormData) {
-      setFormData(cachedFormData);
+    if (storedFormData.id) {
+      setFormData(storedFormData);
     }
-  }, []);
+  }, [storedFormData]);
 
   const generatedId = useMemo(() => {
     return String(users?.reduce((max, user) => Math.max(max, user.id), 0) + 1);
@@ -38,7 +39,7 @@ export const ModalForm = ({ open, setOpen }) => {
   };
 
   const handleSubmit = (event) => {
-    localStorage.removeItem('formData');
+    localStorage.removeItem('storedFormData');
     setFormData({})
     event.preventDefault();
     dispatch(addUserPending(formData));

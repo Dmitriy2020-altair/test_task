@@ -6,6 +6,8 @@ import { ButtonWrapper } from './styles/ButtonWrapper.styled';
 import { LoaderWrapper } from './styles/LoaderWrapper';
 import { StyledTableRow } from './styles/StyledTableRow.styled';
 import { TableDataWrapper } from './styles/TableDataWrapper.styled';
+import useViewPortWidth from '../hooks/useViewPortWidth';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function TableRow() {
   const {
@@ -16,13 +18,12 @@ export default function TableRow() {
   } = useSelector(state => state.userReducer)
   const dispatch = useDispatch()
   const [isEdit, setIsEdit] = useState(false)
-  const [editedUser, setEditedUser] = useState(JSON.parse(localStorage.getItem('editedUser')) || {})
-  const [cachedUsers, setCachedUsers] = useState([]);
+  const [editedUser, setEditedUser] = useLocalStorage('editedUser', {})
   const [sortOrder, setSortOrder] = useState({
     column: 'id',
     direction: 'asc',
   });
-  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+  const viewportWidth = useViewPortWidth(window)
 
   useEffect(() => {
     dispatch(getUsers());
@@ -35,39 +36,11 @@ export default function TableRow() {
   }, [isDeleting, isUpdating]);
 
   useEffect(() => {
-    localStorage.setItem('users', JSON.stringify(users));
-  }, [users]);
-
-  useEffect(() => {
-    const cachedUsers = JSON.parse(localStorage.getItem('users'));
-    if (cachedUsers) {
-      setCachedUsers(cachedUsers);
-    } else {
-      setCachedUsers(users)
-    }
-  }, [users]);
-
-  useEffect(() => {
-    localStorage.setItem('editedUser', JSON.stringify(editedUser));
-  }, [editedUser]);
-
-  useEffect(() => {
-    const cachedUser = JSON.parse(localStorage.getItem('editedUser'));
-    if (cachedUser && editedUser.id) {
-      setEditedUser(cachedUser);
+    if (editedUser && editedUser.id) {
+      setEditedUser(editedUser);
       setIsEdit(true)
     }
-  }, [editedUser.id]);
-
-  useEffect(() => {
-    function handleResize() {
-      setViewportWidth(window.innerWidth);
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [editedUser, editedUser.id, setEditedUser]);
 
   const onEdit = (userId) => {
     if (isEdit) {
@@ -129,8 +102,8 @@ export default function TableRow() {
           </ButtonWrapper>
         </StyledTableRow>
       )}
-      {!isEdit && cachedUsers && (
-        cachedUsers
+      {!isEdit && users && (
+        users
           .sort((a, b) => {
             const column = sortOrder.column;
             const direction = sortOrder.direction === 'asc' ? 1 : -1;
