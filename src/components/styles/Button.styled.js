@@ -8,6 +8,8 @@ export const Button = styled.button`
   font-size: 16px;
   font-weight: 700;
   padding: ${({ pd }) => pd || `15px 20px`};
+  margin: ${({ mg }) => mg || `0 0 0 0`};
+
   background-color: ${({ bg }) => bg || '#63d6f5'};
   color: ${({ color }) => color || '#333'};
   transition: 0.2s linear;
